@@ -4,8 +4,39 @@
   "description": "An app that allows users to create wikis and share them publicly or privately with other collaborators.",
   "main": "src/server.js",
   "scripts": {
-    "test": "export NODE_ENV=test && jasmine"
+    "test": "export NODE_ENV=test && jasmine",
+    "start": "nodemon src/server.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mouten57/blocipedia-node.git"
+  },
+  "keywords": [
+    "blocipedia"
+  ],
   "author": "Matt Outen",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "faker": "^4.1.0",
+    "jasmine": "^3.0.0",
+    "morgan": "^1.9.1",
+    "request": "^2.83.0"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.18.3",
+    "dotenv": "^6.0.0",
+    "ejs": "^2.6.1",
+    "express": "^4.16.2",
+    "express-flash": "0.0.2",
+    "express-session": "^1.15.6",
+    "express-validator": "^5.3.0",
+    "nodemon": "^1.18.4",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
+    "pg": "^7.4.3",
+    "pg-hstore": "^2.3.2",
+    "sequelize": "^4.38.1",
+    "sequelize-cli": "^4.1.1"
+  }
 }

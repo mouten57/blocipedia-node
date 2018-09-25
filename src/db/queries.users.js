@@ -16,7 +16,12 @@ module.exports = {
             callback(null, user);
         })
         .catch((err) => {
-            callback(err);
+            //my duplicate user error wasn't showing up unless I did this.
+            newErr= [{
+                param: err.errors[0].path,
+                msg: err.errors[0].message
+              }]
+              callback(newErr);
         });
     },
 

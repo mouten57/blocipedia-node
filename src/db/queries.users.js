@@ -6,11 +6,11 @@ const sgMail = require('@sendgrid/mail');
 module.exports = {
 
     createUser(newUser, callback){
-        const OGuser = Boolean(User.findAll({ where: {email: newUser.email}}));
+        // const OGuser = Boolean(User.findAll({ where: {email: newUser.email}}));
         const salt = bcrypt.genSaltSync();
         const hashedPassword = bcrypt.hashSync(newUser.password, salt);
 
-        console.log(OGuser)
+        // console.log(OGuser)
 
         return User.create({
             name: newUser.name,

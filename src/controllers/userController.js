@@ -9,14 +9,14 @@ module.exports = {
   create(req, res, next) {
     let newUser = {
       name: req.body.name,
-      email: req.body.email,
+      email: (req.body.email).toLowerCase(),
       password: req.body.password,
       passwordConfirmation: req.body.passwordConfirmation
     };
     
     userQueries.createUser(newUser, (err, user) => {
       if(err) {
-          req.flash("error", err);
+          req.flash("notice", "Email already registered!");
           res.redirect("/users/sign_up");
         } else {
           passport.authenticate("local")(req, res, () => {
@@ -34,6 +34,7 @@ module.exports = {
   signIn(req, res, next){
     passport.authenticate("local")(req, res, function () {
       if(!req.user){
+        console.log('userController line 37')
         req.flash("notice", "Sign in failed. Please try again.")
         res.redirect("/users/sign_in");
       } else {

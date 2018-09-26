@@ -12,15 +12,11 @@ module.exports = {
       password: req.body.password,
       passwordConfirmation: req.body.passwordConfirmation
     };
-    console.log(newUser)
 
     userQueries.createUser(newUser, (err, user) => {
       if(err) {
-        console.log('error in userController')
-        console.log(err)
         req.flash("error", err);
         res.redirect("/users/sign_up");
-
       } else {
         const sgMail = require('@sendgrid/mail');
         sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -31,11 +27,9 @@ module.exports = {
           text: 'Log in and start collaborating on wikis!',
           html: '<strong>Log in and start collaborating on wikis!</strong>',
         };
-        sgMail.send(msg)
-        passport.authenticate("local")(req, res, () => {
+        sgMail.send(msg);
           req.flash("notice", "You've successfully signed up!");
           res.redirect("/");
-        })
       }
     });
   },

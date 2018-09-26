@@ -13,7 +13,15 @@
         <header class="jumbotron my-4">
           <h1 class="display-3">Welcome to Blocipedia</h1>
           <p class="lead">An application for users to share information.</p>
-          <a href="/users/sign_up" class="btn btn-primary btn-lg">Sign Up</a>
+
+          <% if(!currentUser) { %>
+            <a href="/users/sign_up" class="btn btn-primary btn-lg">Sign Up</a>
+            <a href="/users/sign_in" class="btn btn-primary btn-lg">Sign In</a>
+          <% } else { %>
+            <br>
+            <a href='#' class="btn btn-success btn-lg btn-block">Take me to the wikis!</a>
+          <% } %>
+          
         </header>
 
         <!-- Page Features -->  

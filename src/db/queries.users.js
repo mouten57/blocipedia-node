@@ -1,11 +1,16 @@
 const User = require("./models").User;
 const bcrypt = require("bcryptjs");
+const sgMail = require('@sendgrid/mail');
+
 
 module.exports = {
 
     createUser(newUser, callback){
+        const OGuser = Boolean(User.findAll({ where: {email: newUser.email}}));
         const salt = bcrypt.genSaltSync();
         const hashedPassword = bcrypt.hashSync(newUser.password, salt);
+
+        console.log(OGuser)
 
         return User.create({
             name: newUser.name,
@@ -13,15 +18,21 @@ module.exports = {
             password: hashedPassword
         })
         .then((user) => {
+
+            sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
+            const msg = {
+                to: user.email,
+                from: 'signedup@blocipedia.com',
+                subject: "You've Signed Up with Blocipedia!",
+                text: 'Log in and start collaborating on wikis!',
+                html: '<strong>Log in and start collaborating on wikis!</strong>',
+            };
+            sgMail.send(msg);
             callback(null, user);
         })
         .catch((err) => {
-            //my duplicate user error wasn't showing up unless I did this.
-            newErr= [{
-                param: err.errors[0].path,
-                msg: err.errors[0].message
-              }]
-              callback(newErr);
+            callback(err);
         });
     },
 

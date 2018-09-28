@@ -9,13 +9,13 @@ module.exports = class ApplicationPolicy {
     //   return this.record && this.user.role == "standard";
     // }
   
-    _isOwner() {
-      return this.record && (this.record.userId == this.user.id);
-    }
+    // _isOwner() {
+    //   return this.record && (this.record.userId == this.user.id);
+    // }
   
-    _isAdmin() {
-      return this.user && this.user.role == "admin";
-    }
+    // _isAdmin() {
+    //   return this.user && this.user.role == "admin";
+    // }
   
     // _isPremium() {
     //   return this.user && this.user.role == "premium";
@@ -34,7 +34,8 @@ module.exports = class ApplicationPolicy {
     }
   
     edit() {
-      return this.new() && this.record && (this._isOwner() || this._isAdmin());
+      return this.new(); 
+      // && this.record && (this._isOwner() || this._isAdmin());
     }
   
     update() {

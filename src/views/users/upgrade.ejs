@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <% include ../static/partials/head.ejs %>
+</head>
+
+<body>
+
+    <% include ../static/partials/navbar.ejs %>
+
+    <main class="container">
+
+        <% include ../static/partials/messages.ejs %>
+
+        <h1>UPGRADE Your Account for more FEATURES?</h1>
+<a href="/users/account" class="btn btn-outline-info btn-sm"><i class="fas fa-arrow-left"></i>Back to my profile</a>
+
+        <p>For $15/month, you can create private Wikis and collaborate with other members!</p>
+
+        <div style='border: 1px dashed black; padding: 12px'><small>Pay with super-secret card number (4242 4242 4242 4242),
+        Expiration date (01/2019) and CVC number (123)</small></div>
+
+
+        <form action="/users/<%= currentUser.id %>/upgrade" method="POST" style='margin-top:15px'>
+        <script src="https://checkout.stripe.com/checkout.js" class="stripe-button" data-key="pk_test_gbiII08Jh4eM8K6iQ5nP35Ye"
+                data-amount="1500" data-name="Demo Site" data-description="Example charge" data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+                data-locale="auto">
+            </script>
+        </form>
+
+    </main>
+
+    <% include ../static/partials/baseScripts.ejs %>
+
+</body>
+
+</html>

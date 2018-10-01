@@ -19,7 +19,11 @@
             <a href="/users/sign_in" class="btn btn-primary btn-lg">Sign In</a>
           <% } else { %>
             <br>
-            <a href='/wikis' class="btn btn-success btn-lg btn-block">Take me to the wikis!</a>
+            <a href='/wikis' class="btn btn-success btn-sm" style='display: inline-block'>Take me to the wikis!</a>
+            <a href='/users/account' class="btn btn-info btn-sm" style='display: inline-block'>My Profile</a>
+            <% if(currentUser.role != "premium") { %>  
+            <a href='/users/upgrade' class="btn btn-primary btn-sm" style='display: inline-block'>Upgrade to Premium</a>
+              <% } %>
           <% } %>
           
         </header>

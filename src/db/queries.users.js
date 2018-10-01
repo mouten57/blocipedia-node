@@ -6,11 +6,8 @@ const sgMail = require('@sendgrid/mail');
 module.exports = {
 
     createUser(newUser, callback){
-        // const OGuser = Boolean(User.findAll({ where: {email: newUser.email}}));
         const salt = bcrypt.genSaltSync();
         const hashedPassword = bcrypt.hashSync(newUser.password, salt);
-
-        // console.log(OGuser)
 
         return User.create({
             name: newUser.name,
@@ -44,8 +41,53 @@ module.exports = {
                 callback(404);
             } else {
                 result["user"] = user;
+
+                Wiki.scope({ method: ["userWikis", id]}).all()
+                .then((wikis) => {
+                    result['wikis'] = wikis;
+
+                    callback(err);
+                });
             }
             });
+        },
+
+        // getAllUsers(callback){
+        //     return User.all()
+        //     .then((users) => {
+        //         callback(null, users);
+        //     })
+        //     .catch((err) => {
+        //         callback(err);
+        //     });
+        // },
+
+        upgradeUser(id, callback){
+            return User.findById(id)
+            .then((user) => {
+                if(!user) {
+                    return callback(404);
+                } else {
+                    return user.updateAttributes({role: 'premium' });
+                }
+            })
+            .catch((err) => {
+                callback(err);
+            })
+        },
+
+        downgradeUser(id, callback){
+            return User.findById(id)
+            .then((user) => {
+                if(!user){
+                    return callback(404);
+                } else {
+                    return user.updateAttributes({role: "standard"});
+                }
+            })
+            .catch((err) => {
+                callback(err);
+            })
         }
 
 }

@@ -13,6 +13,16 @@ module.exports = {
     });
   },
 
+  private(req, res, next){
+    wikiQueries.getAllWikis((err, wikis) => {
+      if(err){
+        res.redirect(500, 'static/index');
+      } else {
+        res.render('wikis/private', {wikis});
+      }
+    })
+  },
+
   new(req, res, next) {
     res.render("wikis/new");
   },

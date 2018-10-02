@@ -22,14 +22,26 @@
         <!-- <p>Want to contribute something new? <a href="/wikis/new" class="btn btn-success">New Wiki</a></p> -->
 
         <ul class="list-group">
-            <% const newWikis = wikis.filter( wiki => wiki.userId === currentUser.id || wiki.private == false) %>
-            <% newWikis.forEach((wiki) => { %>
+            <% if (currentUser.role == 'admin') {wikis.forEach((wiki)=> { %>
+                <li class="list-group-item">
+                    <a href="/wikis/<%= wiki.id %>">
+                        <%= wiki.title %></a>
+                    <small> by: <%= currentUser.name %> @ <%= wiki.createdAt %> (PRIVATE: <%= (wiki.private).toString().toUpperCase(); %>) </small>
+                </li>
+                <% })} else { %>
+                    <% const newWikis = wikis.filter( wiki => wiki.userId === currentUser.id || wiki.private == false) %>
+                    <% newWikis.forEach((wiki) => { %>
                     <li class="list-group-item">
                         <a href="/wikis/<%= wiki.id %>"><%= wiki.title %></a>
+                    <small> by:
+                        <%= currentUser.name %> @ <%= wiki.createdAt %> </small>
+
                     </li>
             
-            <% }) %>
+            <% }) }%>
+
         </ul>
+        <% console.log(wikis[0].title) %>
 
         </main>
 

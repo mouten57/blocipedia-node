@@ -13,8 +13,11 @@
         <a href='/' class="btn btn-outline-info" style='display:inline-block; margin-bottom: 19px'><i class='fas fa-arrow-left'></i>Home</a>
 
         <% if(!currentUser) { %>
+            <br>
         <small>Please sign up/sign in to create your own wiki topic.</small>
-        <% } %>
+
+        <% } else { %>
+
         <% if(currentUser) { %>
         <p>Want to contribute something new? <a href="/wikis/new" class="btn btn-success">New Wiki</a></p>
         <% } %>
@@ -39,9 +42,9 @@
                     </li>
             
             <% }) }%>
+        <% } %>
 
         </ul>
-        <% console.log(wikis[0].title) %>
 
         </main>
 

@@ -21,8 +21,6 @@
     <p style='display: inline-block'> <%= currentUser.role %> </p>
     <hr>
 
-    <% console.log(currentUser.email) %>
-
     <% if(currentUser && currentUser.role === "standard") { %>
     <p>You are currently a standard user. If you want to create private wikis, please upgrade your account.</p>
     <a href="/users/upgrade" class="btn btn-success">Upgrade</a>

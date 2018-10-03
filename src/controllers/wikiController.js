@@ -56,6 +56,7 @@ module.exports = {
       if (err || wiki == null) {
         res.redirect(404, "/");
       } else {
+        wiki.body = markdown.toHTML(wiki.body);
         res.render("wikis/show", { wiki });
       }
     });

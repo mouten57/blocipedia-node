@@ -15,11 +15,20 @@
         <% if(!currentUser) { %>
             <small>Please sign up/sign in to create your own wiki topic.</small>
         <% } %>
-        <a href="/wikis/<%= wiki.id %>/edit" class="btn btn-warning">Edit</a>
-        <form style="display:initial" action="/wikis/<%= wiki.id %>/destroy" method="post">
-            <button type="submit" class="btn btn-danger">Delete</button>
-        </form>
-        <p><%- wiki.body %></p>
+        <% if(currentUser) { %>
+            <a href="/wikis/<%= wiki.id %>/edit" class="btn btn-warning">Edit</a>
+            <form style="display:initial" action="/wikis/<%= wiki.id %>/destroy" method="post">
+                <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
+            <% } %>
+
+            <% if(wiki.private) { %>
+                <a href="/wikis/<%= wiki.id %>/collaborators" class="btn btn-info">Edit Collaborators</a>
+            <% } %>
+
+            <a href="/wikis/" class="btn btn-success">Wikis</a>
+            <hr>
+            <p><%- wiki.body %></p>
         
     </main>
 

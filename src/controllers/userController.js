@@ -2,7 +2,7 @@ const userQueries = require("../db/queries.users.js");
 const wikiQueries = require('../db/queries.wikis.js');
 const passport = require("passport");
 const testKey = process.env.STRIPE_TEST_KEY;
-const publishableKey = process.env.STRIPE_PUBLISHABLE_KEY;
+//const publishableKey = process.env.STRIPE_PUBLISHABLE_KEY;
 const stripe = require('stripe')(testKey);
 
 
@@ -57,16 +57,6 @@ module.exports = {
     res.render("users/show");
   },
 
-  // index(req, res, next){
-  //   userQueries.getAllUsers((err, users) => {
-  //     if(err) {
-  //       res.redirect(500, '/');
-  //     } else {
-  //       res.render('users/index', { users });
-  //     }
-  //   })
-  // },
-
   upgradeForm(req, res, next){
     res.render('users/upgrade');
   },
@@ -99,6 +89,18 @@ module.exports = {
     wikiQueries.makePrivate(req.user.dataValues.id);
     req.flash("notice", "You've successfully downgraded your account!");
     res.redirect("/");
+  },
+
+  showCollaborations(req, res, next) {
+    userQueries.getUser(req.user.id, (err, result) => {
+      user = result["user"];
+      collaborations = result["collaborations"];
+      if (err || user == null) {
+        res.redirect(404, "/");
+      } else {
+        res.render("users/collaborations", { user, collaborations });
+      }
+    });
   }
 
 }

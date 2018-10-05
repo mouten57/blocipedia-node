@@ -29,26 +29,21 @@ module.exports = {
         callback(err);
       });
   },
-
+  //add in collaborator scope!
   getWiki(id, callback) {
-    let result = {};
     return Wiki.findById(id)
       .then((wiki) => {
-        if (!wiki) {
-          callback(404);
-        } else {
-          result["wiki"] = wiki;
-          Collaborator.scope({ method: ["collaboratorsFor", id] }).all()
-            .then((collaborators) => {
-              result["collaborators"] = collaborators;
-              callback(null, result);
-            })
-        }
+        callback(null, wiki);
       })
-      .catch((err) => {
+      //..this section causes error of 'cant read property 'wiki' of undefined'
+      //
+      // .then((collaborators) => {
+      //   result["collaborators"] = collaborators;
+      //   callback(null, result);
+      // })
+      .catch(err => {
         callback(err);
-      })
-
+      });
   },
 
   deleteWiki(req, callback) {

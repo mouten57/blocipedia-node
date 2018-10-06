@@ -1,27 +1,28 @@
 const Collaborator = require("./models").Collaborator;
 const Wiki = require("./models").Wiki;
 const User = require("./models").User;
-const Authorizer = require("../policies/collaborator");
+const Authorizer = require("../policies/application");
+
 module.exports = {
+
     createCollaborator(req, callback) {
         User.findOne({
             where: {
-                name: req.body.collaborator
+                username: req.body.collaborator
             }
         })
             .then((user) => {
                 if (!user) {
                     return callback("User does not exist")
                 }
-                //already a collaborator..
                 Collaborator.findOne({
                     where: {
                         userId: user.id,
                         wikiId: req.params.wikiId
                     }
                 })
-                    .then((alreadyCollaborator) => {
-                        if (alreadyCollaborator) {
+                    .then((collaborator) => {
+                        if (collaborator) {
                             return callback('This user is already a collaborator on this wiki.')
                         }
                         let newCollaborator = {
@@ -38,10 +39,13 @@ module.exports = {
                     })
             })
     },
+
     deleteCollaborator(req, callback) {
         let userId = req.body.collaborator;
         let wikiId = req.params.wikiId;
+
         const authorized = new Authorizer(req.user, wiki, userId).destroy();
+
         if (authorized) {
             Collaborator.destroy({
                 where: {
@@ -60,4 +64,5 @@ module.exports = {
             callback(401);
         }
     }
+
 }

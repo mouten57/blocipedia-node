@@ -13,21 +13,23 @@ module.exports = {
   create(req, res, next) {
     let newUser = {
       name: req.body.name,
+      username: (req.body.username).toLowerCase(),
       email: (req.body.email).toLowerCase(),
       password: req.body.password,
       passwordConfirmation: req.body.passwordConfirmation
     };
-    
+
     userQueries.createUser(newUser, (err, user) => {
-      if(err) {
-          req.flash("notice", "Email already registered!");
-          res.redirect("/users/sign_up");
-        } else {
-          passport.authenticate("local")(req, res, () => {
-            req.flash("notice", "You've successfully signed in!");
-            res.redirect("/");
-          })
-        }
+      if(err){
+        req.flash('notice', `${Object.values(err.fields)} has already been used.`);
+        res.redirect("/users/sign_up");
+
+      } else {
+        passport.authenticate("local")(req, res, () => {
+          req.flash("notice", "You've successfully signed up!");
+          res.redirect("/");
+        })
+      }
     });
   },
 

@@ -9,8 +9,6 @@ module.exports = {
             wiki = result["wiki"];
             collaborators = result["collaborators"];
 
-            console.log('in collab show')
-
             if (err || wiki == null) {
                 res.redirect(404, "/");
             } else {

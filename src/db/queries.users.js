@@ -6,32 +6,30 @@ const Collaborator = require("./models").Collaborator;
 
 module.exports = {
 
-    createUser(newUser, callback){
+    createUser(newUser, callback) {
         const salt = bcrypt.genSaltSync();
         const hashedPassword = bcrypt.hashSync(newUser.password, salt);
 
         return User.create({
             name: newUser.name,
+            username: newUser.username,
             email: newUser.email,
             password: hashedPassword
         })
-        .then((user) => {
-
-            sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-
-            const msg = {
-                to: user.email,
-                from: 'signedup@blocipedia.com',
-                subject: "You've Signed Up with Blocipedia!",
-                text: 'Log in and start collaborating on wikis!',
-                html: '<strong>Log in and start collaborating on wikis!</strong>',
-            };
-            sgMail.send(msg);
-            callback(null, user);
-        })
-        .catch((err) => {
-            callback(err);
-        });
+            .then((user) => {
+                const msg = {
+                    to: newUser.email,
+                    from: 'test@example.com',
+                    subject: 'Thank you for joining Blocipedia!',
+                    text: 'we are so glad you could join us',
+                    html: '<strong>start collaborating on wikis today!</strong>',
+                };
+                sgMail.send(msg);
+                callback(null, user);
+            })
+            .catch((err) => {
+                callback(err);
+            })
     },
 
     getUser(id, callback){

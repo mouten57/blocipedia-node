@@ -81,7 +81,6 @@ module.exports = {
         });
       })
       .then(charge => {
-        console.log(req.user);
         userQueries.upgradeUser(req.user.dataValues.id);
         res.render('users/upgrade_success');
       });

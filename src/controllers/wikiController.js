@@ -1,19 +1,19 @@
 const wikiQueries = require('../db/queries.wikis.js');
 const markdown = require('markdown').markdown;
 const Authorizer = require('../policies/application');
+const userQueries = require('../db/queries.users');
 
 module.exports = {
   index(req, res, next) {
     wikiQueries.getAllWikis((err, result) => {
-      let users = result['users'];
       let wikis = result['wikis'];
       if (err) {
         res.redirect(500, 'static/index');
       } else {
-        //GOAL: get name of post creator
-        //I can get userId..how to turn that into a name?
-        //need to get all users and filter wiki.userId == user.id
-        res.render('wikis/index', { wikis });
+        userQueries.getAllUsers((err, result) => {
+          let users = result['users'];
+          res.render('wikis/index', { wikis, users });
+        });
       }
     });
   },

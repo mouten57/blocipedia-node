@@ -32,10 +32,21 @@ module.exports = {
       });
   },
 
+  getAllUsers(callback) {
+    let result = {};
+    return User.all()
+      .then(users => {
+        result['users'] = users;
+        callback(null, result);
+      })
+      .catch(err => {
+        callback(err);
+      });
+  },
+
   getUser(id, callback) {
     let result = {};
     User.findById(id).then(user => {
-      // console.log(user);
       if (!user) {
         callback(404);
       } else {

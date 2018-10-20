@@ -28,14 +28,26 @@
         <p>Want to contribute something new? <a href="/wikis/new" class="btn btn-success">New Wiki</a></p>
         <% } %>
 
+        <% let name = function findName(users, wiki){ 
+            for(let i in users){
+                if (users[i].id == wiki.userId){
+                    return users[i].username
+                }
+            }
+            } %>
 
         <ul class="list-group">
             <% if (currentUser.role == 'admin') {wikis.forEach((wiki)=> { %>
             <li class="list-group-item">
                 <a href="/wikis/<%= wiki.id %>">
                     <%= wiki.title %></a>
-                <small> created on:
-                    <%= wiki.createdAt %> (PRIVATE:
+
+                <small> creator:
+                    <%console.log(wiki) %>
+                    <%= name(users, wiki) %>`
+                    @
+                    <%= wiki.createdAt %>
+                    (PRIVATE:
                     <%= (wiki.private).toString().toUpperCase(); %>) </small>
             </li>
             <% })} else { %>
@@ -44,8 +56,13 @@
             <li class="list-group-item">
                 <a href="/wikis/<%= wiki.id %>">
                     <%= wiki.title %></a>
-                <small> created on:
-                    <%= wiki.createdAt %> </small>
+
+                <small>
+                    creator:
+                    <%= name(users, wiki) %>
+                    @
+                    <%= wiki.createdAt %>
+                </small>
 
             </li>
 

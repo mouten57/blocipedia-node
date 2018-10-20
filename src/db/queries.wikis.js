@@ -18,17 +18,6 @@ module.exports = {
         })
     );
   },
-  getUsers() {
-    let result = {};
-    return User.all()
-      .then(users => {
-        result['users'] = users;
-        callback(null, result);
-      })
-      .catch(err => {
-        callback(err);
-      });
-  },
 
   addWiki(newWiki, callback) {
     return Wiki.create({

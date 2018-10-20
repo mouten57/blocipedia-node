@@ -1,31 +1,35 @@
-const wikiQueries = require("../db/queries.wikis.js");
-const markdown = require("markdown").markdown;
-const Authorizer = require("../policies/application");
-
+const wikiQueries = require('../db/queries.wikis.js');
+const markdown = require('markdown').markdown;
+const Authorizer = require('../policies/application');
 
 module.exports = {
   index(req, res, next) {
-    wikiQueries.getAllWikis((err, wikis) => {
+    wikiQueries.getAllWikis((err, result) => {
+      let users = result['users'];
+      let wikis = result['wikis'];
       if (err) {
-        res.redirect(500, "static/index");
+        res.redirect(500, 'static/index');
       } else {
-        res.render("wikis/index", { wikis });
+        //GOAL: get name of post creator
+        //I can get userId..how to turn that into a name?
+        //need to get all users and filter wiki.userId == user.id
+        res.render('wikis/index', { wikis });
       }
-    })
+    });
   },
 
   private(req, res, next) {
     wikiQueries.getAllWikis((err, wikis) => {
       if (err) {
-        res.redirect(500, "static/index");
+        res.redirect(500, 'static/index');
       } else {
-        res.render("wikis/private", { wikis });
+        res.render('wikis/private', { wikis });
       }
-    })
+    });
   },
 
   new(req, res, next) {
-    res.render("wikis/new");
+    res.render('wikis/new');
   },
 
   create(req, res, next) {
@@ -37,7 +41,7 @@ module.exports = {
     };
     wikiQueries.addWiki(newWiki, (err, wiki) => {
       if (err) {
-        res.redirect(500, "/wikis/new");
+        res.redirect(500, '/wikis/new');
       } else {
         res.redirect(303, `/wikis/${wiki.id}`);
       }
@@ -45,16 +49,15 @@ module.exports = {
   },
 
   show(req, res, next) {
-
     wikiQueries.getWiki(req.params.id, (err, result) => {
-      wiki = result["wiki"];
-      collaborators = result["collaborators"];
+      wiki = result['wiki'];
+      collaborators = result['collaborators'];
 
       if (err || wiki == null) {
-        res.redirect(404, "/");
+        res.redirect(404, '/');
       } else {
         wiki.body = markdown.toHTML(wiki.body);
-        res.render("wikis/show", { wiki });
+        res.render('wikis/show', { wiki });
       }
     });
   },
@@ -62,29 +65,26 @@ module.exports = {
   destroy(req, res, next) {
     wikiQueries.deleteWiki(req.params.id, (err, wiki) => {
       if (err) {
-        res.redirect(500, `/wikis/${wiki.id}`)
+        res.redirect(500, `/wikis/${wiki.id}`);
       } else {
-        res.redirect(303, "/wikis")
+        res.redirect(303, '/wikis');
       }
     });
   },
 
   edit(req, res, next) {
-
     wikiQueries.getWiki(req.params.id, (err, result) => {
-
-      wiki = result["wiki"];
-      collaborators = result["collaborators"];
-
       if (err || wiki == null) {
-        res.redirect(404, "/");
+        res.redirect(404, '/');
       } else {
+        wiki = result['wiki'];
+        collaborators = result['collaborators'];
         const authorized = new Authorizer(req.user, wiki, collaborators).edit();
 
         if (authorized) {
-          res.render("wikis/edit", { wiki, collaborators });
+          res.render('wikis/edit', { wiki, collaborators });
         } else {
-          req.flash("notice", "You are not authorized to do that.");
+          req.flash('notice', 'You are not authorized to do that.');
           res.redirect(`/wikis/${req.params.id}`);
         }
       }
@@ -100,5 +100,4 @@ module.exports = {
       }
     });
   }
-
-}
+};

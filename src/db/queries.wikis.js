@@ -1,18 +1,33 @@
-const Wiki = require("./models").Wiki;
-const Collaborator = require("./models").Collaborator;
-const User = require("./models").User;
+const Wiki = require('./models').Wiki;
+const Collaborator = require('./models').Collaborator;
+const User = require('./models').User;
 
 module.exports = {
-
   getAllWikis(callback) {
-    return Wiki.all()
-
-      .then((wikis) => {
-        callback(null, wikis);
+    let result = {};
+    return (
+      Wiki.all()
+        .then(wikis => {
+          result['wikis'] = wikis;
+          callback(null, result);
+        })
+        // .then(getUsers)
+        // .then(callback(null, result))
+        .catch(err => {
+          callback(err);
+        })
+    );
+  },
+  getUsers() {
+    let result = {};
+    return User.all()
+      .then(users => {
+        result['users'] = users;
+        callback(null, result);
       })
-      .catch((err) => {
+      .catch(err => {
         callback(err);
-      })
+      });
   },
 
   addWiki(newWiki, callback) {
@@ -22,82 +37,79 @@ module.exports = {
       private: newWiki.private,
       userId: newWiki.userId
     })
-      .then((wiki) => {
+      .then(wiki => {
         callback(null, wiki);
       })
-      .catch((err) => {
+      .catch(err => {
         callback(err);
-      })
+      });
   },
 
   getWiki(id, callback) {
     let result = {};
     return Wiki.findById(id)
-      .then((wiki) => {
+      .then(wiki => {
         if (!wiki) {
           callback(404);
         } else {
-          result["wiki"] = wiki;
-          Collaborator.scope({ method: ["collaboratorsFor", id] }).all()
-            .then((collaborators) => {
-              result["collaborators"] = collaborators;
+          result['wiki'] = wiki;
+          Collaborator.scope({ method: ['collaboratorsFor', id] })
+            .all()
+            .then(collaborators => {
+              result['collaborators'] = collaborators;
               callback(null, result);
-            })
+            });
         }
       })
-      .catch((err) => {
+      .catch(err => {
         callback(err);
-      })
-
+      });
   },
 
   deleteWiki(id, callback) {
     return Wiki.destroy({
       where: { id }
     })
-      .then((wiki) => {
+      .then(wiki => {
         callback(null, wiki);
       })
-      .catch((err) => {
+      .catch(err => {
         callback(err);
-      })
+      });
   },
 
   updateWiki(id, updatedWiki, callback) {
-    return Wiki.findById(id)
-      .then((wiki) => {
-        if (!wiki) {
-          return callback("Wiki not found");
-        }
+    return Wiki.findById(id).then(wiki => {
+      if (!wiki) {
+        return callback('Wiki not found');
+      }
 
-        wiki.update(updatedWiki, {
+      wiki
+        .update(updatedWiki, {
           fields: Object.keys(updatedWiki)
         })
-          .then(() => {
-            callback(null, wiki);
-          })
-          .catch((err) => {
-            callback(err);
-          });
-      });
+        .then(() => {
+          callback(null, wiki);
+        })
+        .catch(err => {
+          callback(err);
+        });
+    });
   },
 
   makePrivate(id) {
     return Wiki.all()
-      .then((wikis) => {
-        wikis.forEach((wiki) => {
+      .then(wikis => {
+        wikis.forEach(wiki => {
           if (wiki.userId == id && wiki.private == true) {
             wiki.update({
               private: false
-            })
+            });
           }
-        })
+        });
       })
-      .catch((err) => {
+      .catch(err => {
         console.log(err);
-      })
+      });
   }
-
-
-
-}
+};

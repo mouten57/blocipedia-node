@@ -1,23 +1,25 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <% include ../static/partials/head.ejs %>
-    </head>
-    <body>
-        <% include ../static/partials/navbar.ejs %>
 
-        <main class="container">
+<head>
+    <% include ../static/partials/head.ejs %>
+</head>
 
-        <h1 style='display:inline-block'>Wikis</h1> 
+<body>
+    <% include ../static/partials/navbar.ejs %>
+
+    <main class="container">
+
+        <h1 style='display:inline-block'>Wikis</h1>
 
         <a href='/' class="btn btn-outline-info" style='margin-bottom: 19px; margin-left: 5px'>
             <i class='fas fa-arrow-left'></i>Home</a>
         <h4>Your Wiki Collaborations</h4>
         <a href="/users/collaborations" class="btn btn-primary" style='margin-bottom: 12px'>See Collaborations</a>
-        
+
 
         <% if(!currentUser) { %>
-            <br>
+        <br>
         <small>Please sign up/sign in to create your own wiki topic.</small>
 
         <% } else { %>
@@ -29,29 +31,33 @@
 
         <ul class="list-group">
             <% if (currentUser.role == 'admin') {wikis.forEach((wiki)=> { %>
-                <li class="list-group-item">
-                    <a href="/wikis/<%= wiki.id %>">
-                        <%= wiki.title %></a>
-                    <small> by: <%= currentUser.name %> @ <%= wiki.createdAt %> (PRIVATE: <%= (wiki.private).toString().toUpperCase(); %>) </small>
-                </li>
-                <% })} else { %>
-                    <% const newWikis = wikis.filter( wiki => wiki.userId === currentUser.id || wiki.private == false) %>
-                    <% newWikis.forEach((wiki) => { %>
-                    <li class="list-group-item">
-                        <a href="/wikis/<%= wiki.id %>"><%= wiki.title %></a>
-                    <small> by:
-                        <%= currentUser.name %> @ <%= wiki.createdAt %> </small>
+            <li class="list-group-item">
+                <a href="/wikis/<%= wiki.id %>">
+                    <%= wiki.title %></a>
+                <small> created on:
+                    <%= wiki.createdAt %> (PRIVATE:
+                    <%= (wiki.private).toString().toUpperCase(); %>) </small>
+            </li>
+            <% })} else { %>
+            <% const newWikis = wikis.filter( wiki => wiki.userId === currentUser.id || wiki.private == false) %>
+            <% newWikis.forEach((wiki) => { %>
+            <li class="list-group-item">
+                <a href="/wikis/<%= wiki.id %>">
+                    <%= wiki.title %></a>
+                <small> created on:
+                    <%= wiki.createdAt %> </small>
 
-                    </li>
-            
+            </li>
+
             <% }) }%>
-        <% } %>
+            <% } %>
 
         </ul>
 
-        </main>
+    </main>
 
-        <% include ../static/partials/baseScripts.ejs %>
+    <% include ../static/partials/baseScripts.ejs %>
 
-    </body>
+</body>
+
 </html>

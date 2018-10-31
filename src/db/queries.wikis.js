@@ -36,7 +36,9 @@ module.exports = {
 
   getWiki(id, callback) {
     let result = {};
-    return Wiki.findById(id)
+    return Wiki.findById(id, {
+      include: [{ model: User, as: 'User' }]
+    })
       .then(wiki => {
         if (!wiki) {
           callback(404);

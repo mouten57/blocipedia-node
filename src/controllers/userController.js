@@ -44,7 +44,6 @@ module.exports = {
         req.flash('notice', 'Sign in failed. Please try again.');
         res.redirect('/users/sign_in');
       } else {
-        console.log(req.user.name);
         req.flash('notice', `Welcome back, ${req.user.name}!`);
         res.redirect('/');
       }
@@ -59,7 +58,6 @@ module.exports = {
 
   show(req, res, next) {
     res.render('users/show');
-    console.log(req.user.id);
   },
 
   upgradeForm(req, res, next) {

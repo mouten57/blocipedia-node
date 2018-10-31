@@ -14,18 +14,19 @@
         <% } %>
         <hr>
         <ul class="list-group">
-            <% wikis.forEach((wiki) => { %>
+            <% wikis.forEach(function(wiki) { %>
             <% if(wiki.private === true && wiki.userId === currentUser.id) { %>
             <li class="list-group-item">
                 <a href="/wikis/<%= wiki.id %>">
                     <%= wiki.title %> </a>
             </li>
             <% } %>
+
             <% }) %>
         </ul>
     </main>
 
-<% include ../static/partials/baseScripts.ejs %>
+    <% include ../static/partials/baseScripts.ejs %>
 
 </body>
 

@@ -37,20 +37,24 @@
             } %>
 
         <ul class="list-group">
+            <!-- //shows all wikis for admin -->
+
             <% if (currentUser.role == 'admin') {wikis.forEach((wiki)=> { %>
             <li class="list-group-item">
                 <a href="/wikis/<%= wiki.id %>">
                     <%= wiki.title %></a>
 
                 <small> creator:
-                    <%console.log(wiki) %>
-                    <%= name(users, wiki) %>`
+                    <%= name(users, wiki) %>
                     @
                     <%= wiki.createdAt %>
                     (PRIVATE:
                     <%= (wiki.private).toString().toUpperCase(); %>) </small>
             </li>
             <% })} else { %>
+            <!-- //shows wikis only if authored by user or they are public
+            //to see collaborations as premium user, must click on 'see collaborations' -->
+
             <% const newWikis = wikis.filter( wiki => wiki.userId === currentUser.id || wiki.private == false) %>
             <% newWikis.forEach((wiki) => { %>
             <li class="list-group-item">

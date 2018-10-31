@@ -1,41 +1,44 @@
 <!DOCTYPE html>
 <html lang='en'>
-    <head>
-        <% include ./partials/head.ejs %>
-    </head>
-    <body>
-        <% include ./partials/navbar.ejs %>
-          <!-- Page Content -->
-      <main class="container">
-        <% include ./partials/messages.ejs %>
 
-        <!-- Jumbotron Header -->
-        <header class="jumbotron my-4">
-          <h1 class="display-3">Welcome to Blocipedia</h1>
-          <p class="lead">An application for users to share information.</p>
+<head>
+  <% include ./partials/head.ejs %>
+</head>
 
-          <% if(!currentUser) { %>
-            <a href="/users/sign_up" class="btn btn-primary btn-lg">Sign Up</a>
-            <a href="/users/sign_in" class="btn btn-primary btn-lg">Sign In</a>
-          <% } else { %>
-            <br>
-            <a href='/wikis' class="btn btn-success btn-sm" style='display: inline-block'>Take me to the wikis!</a>
-            <a href='/users/account' class="btn btn-info btn-sm" style='display: inline-block'>My Profile</a>
-            <% if(currentUser.role != "premium") { %>  
-            <a href='/users/upgrade' class="btn btn-primary btn-sm" style='display: inline-block'>Upgrade to Premium</a>
-              <% } %>
-          <% } %>
-          
-        </header>
+<body>
+  <% include ./partials/navbar.ejs %>
+  <!-- Page Content -->
+  <main class="container">
+    <% include ./partials/messages.ejs %>
 
-        <!-- Page Features -->  
-        <section class="row text-center">
+    <!-- Jumbotron Header -->
+    <header class="jumbotron my-4">
+      <h1 class="display-3">Welcome to Blocipedia</h1>
+      <p class="lead">An application for users to share information.</p>
 
-        </section>
-        <!-- /.row -->
+      <% if(!currentUser) { %>
+      <a href="/users/sign_up" class="btn btn-primary btn-lg">Sign Up</a>
+      <a href="/users/sign_in" class="btn btn-primary btn-lg">Sign In</a>
+      <% } else { %>
+      <br>
+      <a href='/wikis' class="btn btn-success btn-sm" style='display: inline-block'>Take me to the wikis!</a>
+      <a href='/users/account' class="btn btn-info btn-sm" style='display: inline-block'>My Profile</a>
+      <% if(currentUser.role == 'standard') { %>
+      <a href='/users/upgrade' class="btn btn-primary btn-sm" style='display: inline-block'>Upgrade to Premium</a>
+      <% } %>
+      <% } %>
 
-      </main>
-      <!-- /.container -->
-    <% include ./partials/baseScripts.ejs %>
-    </body>
+    </header>
+
+    <!-- Page Features -->
+    <section class="row text-center">
+
+    </section>
+    <!-- /.row -->
+
+  </main>
+  <!-- /.container -->
+  <% include ./partials/baseScripts.ejs %>
+</body>
+
 </html>

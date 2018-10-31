@@ -19,7 +19,8 @@ module.exports = {
   },
 
   private(req, res, next) {
-    wikiQueries.getAllWikis((err, wikis) => {
+    wikiQueries.getAllWikis((err, result) => {
+      let wikis = result['wikis'];
       if (err) {
         res.redirect(500, 'static/index');
       } else {
@@ -51,7 +52,6 @@ module.exports = {
   show(req, res, next) {
     wikiQueries.getWiki(req.params.id, (err, result) => {
       wiki = result['wiki'];
-      collaborators = result['collaborators'];
 
       if (err || wiki == null) {
         res.redirect(404, '/');

@@ -1,53 +1,57 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  var User = sequelize.define('User', {
-    name: {
-      type:DataTypes.STRING,
-      allowNull: false
-    },
-    username: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    email: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        isEmail: { msg: "must be a valid email" }
+  var User = sequelize.define(
+    'User',
+    {
+      name: {
+        type: DataTypes.STRING,
+        allowNull: false
+      },
+      username: {
+        type: DataTypes.STRING,
+        allowNull: false
+      },
+      email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          isEmail: { msg: 'must be a valid email' }
+        }
+      },
+      password: {
+        type: DataTypes.STRING,
+        allowNull: false
+      },
+      role: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue: 'standard'
       }
     },
-    password: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    role: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      defaultValue: "standard"
-    }
-  }, {});
-  User.associate = function (models) {
+    {}
+  );
+  User.associate = function(models) {
     // associations can be defined here
     User.hasMany(models.Wiki, {
-      foreignKey: "userId",
-      as: "wikis"
+      foreignKey: 'userId',
+      as: 'wikis'
     });
     User.hasMany(models.Collaborator, {
-      foreignKey: "userId",
-      as: "collaborators"
+      foreignKey: 'userId',
+      as: 'collaborators'
     });
   };
 
   User.prototype.isStandard = function() {
-    return this.role === "standard";
+    return this.role === 'standard';
   };
 
   User.prototype.isAdmin = function() {
-    return this.role === "admin";
+    return this.role === 'admin';
   };
 
   User.prototype.isPremium = function() {
-    return this.role === "premium";
+    return this.role === 'premium';
   };
   return User;
 };

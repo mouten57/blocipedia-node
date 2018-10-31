@@ -31,7 +31,7 @@
                     <%= collaborator.User.username %>
                 </h4>
                 <% if(currentUser && (currentUser.role === "premium" || currentUser.role === "admin")) { %>
-                    <% console.log(collaborator.wikiId) %>
+
                 <form action="/wikis/<%= collaborator.wikiId %>/collaborators/delete" method="post">
                     <button type="submit" class="btn btn-danger">Delete</button>
                     <input type="hidden" value="<%= collaborator.User.id %>" class="form-control" name="collaborator">
@@ -41,7 +41,7 @@
             <% }) %>
         </ul>
         <% } %>
-<% include ../static/partials/baseScripts.ejs %>
+        <% include ../static/partials/baseScripts.ejs %>
 </body>
 
 </html>

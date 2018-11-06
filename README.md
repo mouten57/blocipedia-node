@@ -2,6 +2,8 @@
 
 #### a web application that allows users to create, collaborate and share wikis
 
+[live deployment](https://mouten57-blocipedia.herokuapp.com/)
+
 ---
 
 ### Resources:
@@ -13,6 +15,8 @@
 - Sequelize
 - EJS
 - Bootstrap
+- SendGrid
+- Stripe
 
 This project also utilized SendGrid for email sign-up verification, Stripe for payment integration, Express-validator for validations, Passport.js for authentication, Morgan for route logging, Bcrypt.js for encryption, Jasmine for test-driven development, Faker to help seed the database and Heroku for deployment.
 

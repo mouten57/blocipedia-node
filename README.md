@@ -30,3 +30,7 @@ To see this project in action, clone the repo locally and then run the command:
 
 Runs the app in the development mode.<br>
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+
+### to fix:
+
+- remove `private wikis` on navbar for guest user

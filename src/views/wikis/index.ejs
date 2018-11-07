@@ -1,3 +1,10 @@
+<% let name = function findName(users, wiki){ 
+            for(let i in users){
+                if (users[i].id == wiki.userId){
+                    return users[i].username
+                }
+            }
+            } %>
 <!DOCTYPE html>
 <html>
 
@@ -9,37 +16,45 @@
     <% include ../static/partials/navbar.ejs %>
 
     <main class="container">
-
+        <a href='/' class="btn btn-outline-info" style='margin-bottom: 19px; margin-left: 5px'>
+            <i class='fas fa-arrow-left'></i></a>
         <h1 style='display:inline-block'>Wikis</h1>
 
-        <a href='/' class="btn btn-outline-info" style='margin-bottom: 19px; margin-left: 5px'>
-            <i class='fas fa-arrow-left'></i>Home</a>
-        <h4>Your Wiki Collaborations</h4>
-        <a href="/users/collaborations" class="btn btn-primary" style='margin-bottom: 12px'>See Collaborations</a>
+        <br>
 
+        <a href="/users/collaborations" class="btn btn-primary" style='margin-bottom: 12px'>See Collaborations</a>
 
         <% if(!currentUser) { %>
         <br>
         <small>Please sign up/sign in to create your own wiki topic.</small>
+        <p />
+        <ul class='list-group'>
+            <% const newWikis = wikis.filter( wiki => wiki.private == false) %>
+            <% newWikis.forEach((wiki) => { %>
+            <li class="list-group-item">
+                <a href="/wikis/<%= wiki.id %>">
+                    <%= wiki.title %></a>
 
-        <% } else { %>
+                <small>
+                    creator:
+                    <%= name(users, wiki) %>
+                    @
+                    <%= wiki.createdAt %>
+                </small>
 
-        <% if(currentUser) { %>
-        <p>Want to contribute something new? <a href="/wikis/new" class="btn btn-success">New Wiki</a></p>
-        <% } %>
+            </li>
 
-        <% let name = function findName(users, wiki){ 
-            for(let i in users){
-                if (users[i].id == wiki.userId){
-                    return users[i].username
-                }
-            }
-            } %>
+            <% }) %>
+        </ul>
+
+        <% } else if(currentUser)  { %>
+
+
+        <p>Want to contribute something new? <a href="/wikis/new"><i class="fas fa-lg fa-plus-square" id='plus-icon'></i></a></p>
 
         <ul class="list-group">
             <!-- //shows all wikis for admin -->
-
-            <% if (currentUser.role == 'admin') {wikis.forEach((wiki)=> { %>
+            <%  if (currentUser.role == 'admin') { wikis.forEach((wiki)=> { %>
             <li class="list-group-item">
                 <a href="/wikis/<%= wiki.id %>">
                     <%= wiki.title %></a>
@@ -73,7 +88,9 @@
             <% }) }%>
             <% } %>
 
+
         </ul>
+
 
     </main>
 

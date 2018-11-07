@@ -1,6 +1,7 @@
 const Wiki = require('./models').Wiki;
 const Collaborator = require('./models').Collaborator;
 const User = require('./models').User;
+const Authorizer = require('./../policies/application');
 
 module.exports = {
   getAllWikis(callback) {
@@ -57,34 +58,42 @@ module.exports = {
       });
   },
 
-  deleteWiki(id, callback) {
-    return Wiki.destroy({
-      where: { id }
-    })
-      .then(wiki => {
-        callback(null, wiki);
-      })
-      .catch(err => {
-        callback(err);
-      });
-  },
-
-  updateWiki(id, updatedWiki, callback) {
-    return Wiki.findById(id).then(wiki => {
-      if (!wiki) {
-        return callback('Wiki not found');
-      }
-
-      wiki
-        .update(updatedWiki, {
-          fields: Object.keys(updatedWiki)
-        })
-        .then(() => {
+  deleteWiki(req, callback) {
+    const authorized = new Authorizer(req.user).destroy();
+    if (authorized) {
+      return Wiki.destroy({ where: { id: req.params.id } })
+        .then(wiki => {
           callback(null, wiki);
         })
         .catch(err => {
           callback(err);
         });
+    } else {
+      callback('There was an error');
+    }
+  },
+
+  updateWiki(req, updatedWiki, callback) {
+    return Wiki.findById(req.params.id).then(wiki => {
+      if (!wiki) {
+        return callback('Wiki not found');
+      }
+      const authorized = new Authorizer(req.user, wiki).update();
+      if (authorized) {
+        wiki
+          .update(updatedWiki, {
+            fields: Object.keys(updatedWiki)
+          })
+          .then(() => {
+            callback(null, wiki);
+          })
+          .catch(err => {
+            callback(err);
+          });
+      } else {
+        req.flash('notice', 'You are not authorized to do that.');
+        callback(403);
+      }
     });
   },
 
